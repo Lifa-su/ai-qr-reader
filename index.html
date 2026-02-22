@@ -219,7 +219,7 @@ Scan History
 const $ = s => document.querySelector(s);
 const $$ = s => document.querySelectorAll(s);
 let stream = null, scanning = false, facingMode = 'environment';
-const video = $('#camera-video');
+const video = $('#video');
 const scanCanvas = $('#scan-canvas');
 const scanCtx = scanCanvas.getContext('2d', { willReadFrequently: true });
 
@@ -246,16 +246,16 @@ async function startCamera() {
     video.srcObject = stream;
     await video.play();
     scanning = true;
-    $('#btn-start').textContent = '⏹ Stop';
-    $('#camera-status').textContent = 'Scanning...';
-    $('#camera-status').style.color = 'var(--success)';
+    $('#btn-start').innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="6" width="12" height="12" rx="1"/></svg> Stop';
+    $('#camera-status').className = 'status-dot active';
+    $('#btn-switch').style.display = 'inline-flex';
+    $('#scan-overlay').style.display = 'block';
     requestAnimationFrame(scanFrame);
   } catch (e) {
     let msg = 'Camera access denied.';
     if (e.name === 'NotFoundError') msg = 'No camera found on this device.';
     else if (e.name === 'NotReadableError') msg = 'Camera is in use by another app.';
-    $('#camera-status').textContent = msg;
-    $('#camera-status').style.color = 'var(--danger)';
+    $('#camera-status').className = 'status-dot inactive';
     showToast(msg, 'error');
   }
 }
@@ -264,9 +264,10 @@ function stopCamera() {
   scanning = false;
   if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
   video.srcObject = null;
-  $('#btn-start').textContent = '📷 Start';
-  $('#camera-status').textContent = 'Camera stopped';
-  $('#camera-status').style.color = 'var(--text2)';
+  $('#btn-start').innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg> Start Camera';
+  $('#camera-status').className = 'status-dot inactive';
+  $('#btn-switch').style.display = 'none';
+  $('#scan-overlay').style.display = 'none';
 }
 
 function toggleCamera() {
@@ -345,7 +346,7 @@ function processImage(file) {
         showToast('QR code found!', 'success');
       } else {
         showToast('No QR code found in this image', 'error');
-        $('#upload-result').style.display = 'none';
+        $('#result-card').style.display = 'none';
       }
     };
     img.src = e.target.result;
@@ -391,9 +392,9 @@ function handleResult(data) {
   const typeLabels = { url:'🔗 URL', wifi:'📶 WiFi', vcard:'👤 vCard', phone:'📞 Phone', email:'📧 Email', text:'📝 Text' };
   const typeClasses = { url:'type-url', wifi:'type-wifi', vcard:'type-vcard', phone:'type-phone', email:'type-email', text:'type-text' };
 
-  // Show in both result areas
-  ['#camera-result','#upload-result'].forEach(sel => {
-    const card = $(sel);
+  // Show result
+  {
+    const card = $('#result-card');
     card.style.display = 'block';
     card.querySelector('.result-type').className = 'result-type ' + typeClasses[type];
     card.querySelector('.result-type').textContent = typeLabels[type];
@@ -444,7 +445,7 @@ function handleResult(data) {
       default:
         content.textContent = data;
     }
-  });
+  }
 
   saveToHistory(data, type);
 }
