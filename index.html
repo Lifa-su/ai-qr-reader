@@ -108,6 +108,39 @@ footer{text-align:center;padding:24px;color:var(--text2);font-size:12px;border-t
 .video-wrapper{aspect-ratio:3/4}
 .scan-overlay{width:160px;height:160px}
 }
+/* Pro Features */
+.btn-pro{position:relative}
+.pro-badge{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;text-transform:uppercase;letter-spacing:.5px;margin-left:2px}
+.art-styles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:600px){.art-styles-grid{grid-template-columns:1fr}}
+.art-style-card{position:relative;border-radius:var(--radius);overflow:hidden;cursor:pointer;border:1px solid var(--border);transition:all .2s;aspect-ratio:1}
+.art-style-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.art-style-preview{width:100%;height:100%;filter:blur(1.5px)}
+.art-style-preview.neon{background:linear-gradient(135deg,#0a0a2e,#1a0a3e,#0a0a2e)}
+.art-style-preview.neon::before{content:'';position:absolute;inset:20%;border:2px solid var(--accent);border-radius:8px;box-shadow:0 0 15px var(--accent),0 0 30px rgba(124,92,252,.3),inset 0 0 15px rgba(124,92,252,.1)}
+.art-style-preview.neon::after{content:'';position:absolute;top:30%;left:30%;width:15%;height:15%;background:var(--accent2);border-radius:2px;box-shadow:0 0 10px var(--accent2)}
+.art-style-preview.watercolor{background:linear-gradient(135deg,rgba(124,92,252,.3),rgba(92,140,252,.2),rgba(76,218,138,.2),rgba(252,180,76,.15))}
+.art-style-preview.watercolor::before{content:'';position:absolute;inset:15%;border-radius:12px;background:radial-gradient(circle at 30% 40%,rgba(124,92,252,.4),transparent 60%),radial-gradient(circle at 70% 60%,rgba(92,140,252,.3),transparent 50%)}
+.art-style-preview.pixel{background:var(--surface);image-rendering:pixelated}
+.art-style-preview.pixel::before{content:'';position:absolute;inset:20%;background:repeating-linear-gradient(0deg,var(--accent) 0 8px,transparent 8px 16px),repeating-linear-gradient(90deg,var(--accent2) 0 8px,transparent 8px 16px);opacity:.4}
+.art-style-preview.pixel::after{content:'';position:absolute;top:25%;left:25%;width:20%;height:20%;background:var(--accent)}
+.art-style-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(10,10,15,.5);gap:8px}
+.art-style-lock{font-size:24px}
+.art-style-name{font-size:13px;font-weight:600;color:#fff}
+.art-style-tag{font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;text-transform:uppercase;letter-spacing:.5px}
+.pro-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);z-index:200;align-items:center;justify-content:center;padding:20px}
+.pro-modal-overlay.active{display:flex}
+.pro-modal{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;max-width:420px;width:100%;box-shadow:0 8px 32px rgba(0,0,0,.5);animation:fadeIn .3s;position:relative}
+.pro-modal-title{font-size:20px;font-weight:700;margin-bottom:8px;text-align:center}
+.pro-modal-desc{color:var(--text2);font-size:14px;text-align:center;margin-bottom:20px}
+.pro-modal-features{list-style:none;margin-bottom:24px}
+.pro-modal-features li{padding:8px 0;font-size:14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
+.pro-modal-features li:last-child{border-bottom:none}
+.pro-modal-features li::before{content:'✓';color:var(--success);font-weight:700;font-size:16px}
+.pro-modal-cta{display:block;width:100%;padding:14px;border:none;border-radius:var(--radius);background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit;text-align:center;text-decoration:none;transition:all .2s}
+.pro-modal-cta:hover{opacity:.9;transform:translateY(-1px)}
+.pro-modal-close{position:absolute;top:12px;right:12px;background:none;border:none;color:var(--text2);cursor:pointer;font-size:20px;padding:4px 8px;border-radius:4px}
+.pro-modal-close:hover{color:var(--text)}
 </style>
 </head>
 <body>
@@ -204,6 +237,38 @@ Scan History
 <div class="empty-state">
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="8" height="8" rx="1"/><rect x="14" y="2" width="8" height="8" rx="1"/><rect x="2" y="14" width="8" height="8" rx="1"/><rect x="14" y="14" width="8" height="8" rx="1"/></svg>
 <p>No scans yet. Start scanning!</p>
+</div>
+</div>
+</div>
+
+<!-- Art Styles Pro -->
+<div class="card">
+<div class="card-title">🎨 Art Styles <span class="pro-badge">PRO</span></div>
+<p style="color:var(--text2);font-size:14px;margin-bottom:16px">Transform your QR codes into stunning artwork</p>
+<div class="art-styles-grid">
+<div class="art-style-card" onclick="showProModal()">
+<div class="art-style-preview neon"></div>
+<div class="art-style-overlay">
+<div class="art-style-lock">🔒</div>
+<div class="art-style-name">Neon Glow</div>
+<div class="art-style-tag">Pro</div>
+</div>
+</div>
+<div class="art-style-card" onclick="showProModal()">
+<div class="art-style-preview watercolor"></div>
+<div class="art-style-overlay">
+<div class="art-style-lock">🔒</div>
+<div class="art-style-name">Watercolor</div>
+<div class="art-style-tag">Pro</div>
+</div>
+</div>
+<div class="art-style-card" onclick="showProModal()">
+<div class="art-style-preview pixel"></div>
+<div class="art-style-overlay">
+<div class="art-style-lock">🔒</div>
+<div class="art-style-name">Pixel Art</div>
+<div class="art-style-tag">Pro</div>
+</div>
 </div>
 </div>
 </div>
@@ -445,6 +510,7 @@ function handleResult(data) {
       default:
         content.textContent = data;
     }
+    actions.innerHTML += ' <button class="btn btn-sm btn-secondary btn-pro" onclick="showProModal()">📸 HD Export <span class="pro-badge">PRO</span></button>';
   }
 
   saveToHistory(data, type);
@@ -538,6 +604,16 @@ function renderHistory() {
   }).join('');
 }
 
+// Pro Modal
+function showProModal() {
+  const overlay = $('#pro-modal-overlay');
+  if (overlay) overlay.classList.add('active');
+}
+function hideProModal() {
+  const overlay = $('#pro-modal-overlay');
+  if (overlay) overlay.classList.remove('active');
+}
+
 // Init
 renderHistory();
 // Default to camera tab on mobile, upload on desktop
@@ -547,6 +623,22 @@ if (/Mobi|Android/i.test(navigator.userAgent)) {
   document.querySelector('[data-tab="upload"]').click();
 }
 </script>
+<!-- Pro Upgrade Modal -->
+<div class="pro-modal-overlay" id="pro-modal-overlay" onclick="if(event.target===this)hideProModal()">
+<div class="pro-modal">
+<button class="pro-modal-close" onclick="hideProModal()">✕</button>
+<div class="pro-modal-title">✨ Unlock Pro QR Features</div>
+<div class="pro-modal-desc">Take your QR experience to the next level</div>
+<ul class="pro-modal-features">
+<li>HD image export with custom resolution</li>
+<li>Artistic QR code styles</li>
+<li>Custom branding &amp; watermarks</li>
+<li>Batch scanning for multiple codes</li>
+</ul>
+<a href="https://feifeicch.gumroad.com/ai-qr-reader" target="_blank" rel="noopener" class="pro-modal-cta">Upgrade to Pro — $9</a>
+</div>
+</div>
+
 <!-- MONETIZE:START -->
 <script src="monetize.js"></script>
 <!-- MONETIZE:END -->
